@@ -64,4 +64,6 @@ In this lab environment, we will publish the image and run the application on th
 sudo docker run -d --name test -p 8080:80 kabbo06/hello_world_test:latest
 ```
 
-Verify that our application is running:
+### Verify that our application is running:
+
+![](/images/img2.png)
