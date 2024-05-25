@@ -162,3 +162,6 @@ The API server will run this script via SSH remote command execution, so passwor
 node app.js
 ```
 ![](/images/img1.3.png)
+
+### Configuring Docker Hub Webhooks:
+Now, we need to configure the webhook from Docker Hub repository settings as follows:
