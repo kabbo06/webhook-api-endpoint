@@ -57,3 +57,5 @@ sudo docker build -t kabbo06/hello_world_test .
 ```
 sudo docker push kabbo06/hello_world_test
 ```
+
+In this lab environment, we will publish the image and run the application on the same server. Also, we will create and run the API server here. Execute the above application using the docker run command:
