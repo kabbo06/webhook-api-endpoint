@@ -184,7 +184,7 @@ Now, we will make some change to our sample application and build a new image. A
 </html>
 ```
 
-Now build modified image and push to dockerhub repository:
+Now build modified image and push to Docker Hub repository:
 
 ```
 sudo docker build -t kabbo06/hello_world_test .
@@ -192,3 +192,7 @@ sudo docker build -t kabbo06/hello_world_test .
 ```
 sudo docker push kabbo06/hello_world_test
 ```
+
+When new image is uploaded to the repository, it will trigger the API server.
+
+![](/images/img1.4.png)
