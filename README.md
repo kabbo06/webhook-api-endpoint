@@ -165,3 +165,5 @@ node app.js
 
 ### Configuring Docker Hub Webhooks:
 Now, we need to configure the webhook from Docker Hub repository settings as follows:
+
+![](/images/img1.4.png)
