@@ -33,7 +33,6 @@ CMD ["nginx", "-g", "daemon off;"]
 ```
 
 ### index.html
-
 ```
 <!-- index.html -->
 <!DOCTYPE html>
@@ -52,13 +51,10 @@ Now build image and push to dockerhub repository:
 ```
 sudo docker build -t kabbo06/hello_world_test .
 ```
-
 ```
 sudo docker push kabbo06/hello_world_test
 ```
-
 In this lab environment, we will publish the image and run the application on the same server. Also, we will create and run the API server here. Execute the above application using the docker run command:
-
 ```
 sudo docker run -d --name test -p 8080:80 kabbo06/hello_world_test:latest
 ```
@@ -71,7 +67,6 @@ sudo docker run -d --name test -p 8080:80 kabbo06/hello_world_test:latest
 Node.js should be installed on the API server. Please follow the steps below to build and run the API server, which will be running on port 4000 and will accept API calls at the /hook URL. A secret token is also configured in this script, which will be needed when configuring the webhook in the Docker Hub repository.
 
 ### app.js
-
 ```
 var { execSync } = require("child_process");
 var express = require("express");
@@ -121,10 +116,42 @@ module.exports = app;
 npm init -y
 npm install express cookie-parser morgan 
 ```
-
 When this API endpoint receives a POST request from the Docker Hub webhook, it will run a script that we will configure next.
 
 ### script.sh
+```
+#!/bin/bash
+
+# Variables
+CONTAINER_NAME="test"
+IMAGE_NAME="kabbo06/hello_world_test"
+
+echo "Stopping the container..."
+# Stop the running container
+sudo docker stop $CONTAINER_NAME
+
+echo "Removing the container..."
+# Remove the stopped container
+sudo docker rm $CONTAINER_NAME
+
+echo "Removing the image..."
+# Remove the Docker image
+sudo docker rmi $IMAGE_NAME:latest
+
+echo "Pulling the latest image..."
+# Pull the latest image from the repository
+sudo docker pull $IMAGE_NAME:latest
+
+echo "Running the new container..."
+# Run the new container
+sudo docker run -d --name $CONTAINER_NAME -p 8080:80  $IMAGE_NAME:latest
+
+echo "Cleaning unused container images..."
+# Clean unused images
+sudo docker system prune --all -f
+
+echo "Done!"
+```
 
 
 
