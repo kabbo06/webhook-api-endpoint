@@ -66,4 +66,4 @@ sudo docker run -d --name test -p 8080:80 kabbo06/hello_world_test:latest
 
 ### Verify that our application is running:
 
-![](/images/img2.png)
+![](/images/img1.2.png)
