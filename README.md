@@ -117,3 +117,8 @@ app.listen(port, () => {
 
 module.exports = app;
 ```
+
+```
+npm init -y
+npm install express cookie-parser morgan 
+```
