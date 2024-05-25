@@ -161,4 +161,4 @@ The API server will run this script via SSH remote command execution, so passwor
 ```
 npm start
 ```
-
+![](/images/img1.3.png)
