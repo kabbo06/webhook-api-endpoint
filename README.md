@@ -8,7 +8,9 @@ In this scenario, we will deploy a CI/CD pipeline where, when a developer pushes
 ### Download Source Code:
 
 ```
+git clone https://github.com/kabbo06/webhook-api-endpoint.git
 
+cd webhook-api-endpoint/
 ```
 
 ### Run sample application using docker:
