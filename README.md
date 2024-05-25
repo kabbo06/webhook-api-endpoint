@@ -196,3 +196,5 @@ sudo docker push kabbo06/hello_world_test
 When new image is uploaded to the repository, it will trigger the API server.
 
 ![](/images/img1.6.png)
+
+### Finally Verify that updated application is running:
