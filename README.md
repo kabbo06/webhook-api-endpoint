@@ -167,3 +167,19 @@ node app.js
 Now, we need to configure the webhook from Docker Hub repository settings as follows:
 
 ![](/images/img1.4.png)
+
+Now, we will make some change to our sample application and build a new image. Afterward, we will push this image to the Docker Hub repository. At this point, Docker Hub should execute an API call to our server, triggering the automatic deployment of the new application.
+
+### Chane the content of index.html
+```
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello World Test</title>
+</head>
+<body>
+    <h1>Application Version 2.0</h1>
+</body>
+</html>
+```
