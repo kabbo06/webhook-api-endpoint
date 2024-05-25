@@ -122,3 +122,10 @@ module.exports = app;
 npm init -y
 npm install express cookie-parser morgan 
 ```
+
+When this API endpoint receives a POST request from the Docker Hub webhook, it will run a script that we will configure next.
+
+### script.sh
+
+
+
