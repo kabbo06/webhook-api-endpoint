@@ -155,7 +155,7 @@ echo "Done!"
 ```
 chmod +x script.sh
 ```
-The API server will run this script via SSH remote command execution, so passwordless SSH authentication should be configured. This script can be hosted on a local or remote server where the application is running.
+The API server will run this script via SSH remote command execution, so passwordless SSH authentication should be configured. This script can be hosted on a local or remote server where the application is running. It will stop and remove existing version of application and pull the latest build image and finally run using docker.
 
 ### Now run our API server with below command:
 ```
