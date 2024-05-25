@@ -15,6 +15,7 @@ cd webhook-api-endpoint/
 
 ### Run sample application using docker:
 To test and demonstrate our methodology, we will deploy a sample application by creating the following:
+
 ### Dockerfile
 
 ```
@@ -29,4 +30,19 @@ EXPOSE 80
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
+```
+
+### index.html
+
+```
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello World Test</title>
+</head>
+<body>
+    <h1>Application Version 1.0</h1>
+</body>
+</html>
 ```
