@@ -46,3 +46,13 @@ CMD ["nginx", "-g", "daemon off;"]
 </body>
 </html>
 ```
+
+Now build image and push to dockerhub repository:
+
+```
+sudo docker build -t kabbo06/hello_world_test .
+```
+
+```
+sudo docker push kabbo06/hello_world_test
+```
