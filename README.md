@@ -159,6 +159,6 @@ The API server will run this script via SSH remote command execution, so passwor
 
 ### Now run our API server with below command:
 ```
-npm start
+node app.js
 ```
 ![](/images/img1.3.png)
