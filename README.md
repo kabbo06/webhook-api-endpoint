@@ -67,3 +67,6 @@ sudo docker run -d --name test -p 8080:80 kabbo06/hello_world_test:latest
 ### Verify that our application is running:
 
 ![](/images/img1.2.png)
+
+### Building an API Endpoint Using Node.js:
+Node.js should be installed on the API server. Please follow the steps below to build and run the API server, which will be running on port 4000 and will accept API calls at the /hook URL. A secret token is also configured in this script, which will be needed when configuring the webhook in the Docker Hub repository.
