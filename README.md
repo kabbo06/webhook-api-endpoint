@@ -18,7 +18,6 @@ cd webhook-api-endpoint/
 To test and demonstrate our methodology, we will deploy a sample application by creating the following:
 
 ### Dockerfile
-
 ```
 # Use the official Nginx image from the Docker Hub
 FROM nginx:latest
