@@ -49,14 +49,14 @@ CMD ["nginx", "-g", "daemon off;"]
 Now build image and push to dockerhub repository:
 
 ```
-sudo docker build -t kabbo06/hello_world_test .
+sudo docker build -t kabbo06/hello_world_test:v1 .
 ```
 ```
-sudo docker push kabbo06/hello_world_test
+sudo docker push kabbo06/hello_world_test:v1
 ```
 In this lab environment, we will publish the image and run the application on the same server. Also, we will create and run the API server here. Execute the above application using the docker run command:
 ```
-sudo docker run -d --name test -p 8080:80 kabbo06/hello_world_test:latest
+sudo docker run -d --name test -p 8080:80 kabbo06/hello_world_test:v1
 ```
 
 ### Verify that our application is running:
@@ -237,10 +237,10 @@ Now, we will make some change to our sample application and build a new image. A
 Now build modified image and push to Docker Hub repository:
 
 ```
-sudo docker build -t kabbo06/hello_world_test .
+sudo docker build -t kabbo06/hello_world_test:v2 .
 ```
 ```
-sudo docker push kabbo06/hello_world_test
+sudo docker push kabbo06/hello_world_test:v2
 ```
 
 When new image is uploaded to the repository, it will trigger the API server.
