@@ -77,7 +77,7 @@ var app = express();
 const port = 4000;
 
 // Hardcoded token
-const SECRET_TOKEN = 'secret-token'; // set your own secret token
+const SECRET_TOKEN = "secret-token"; // set your own secret token
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -91,14 +91,27 @@ app.post("/hook", (req, res) => {
     return res.status(403).send("Forbidden: Invalid Token");
   }
 
-  console.log("Docker hub triggered");
+  console.log("Docker Hub triggered");
 
-  const command = `ssh -i ~/.ssh/id_rsa nroot@103.15.43.150 'bash ~/webhook-api-endpoint/script.sh'`; // Replace with appropriate IP address
+  // Log the entire payload received from Docker Hub
+  console.log("Payload received:", JSON.stringify(req.body, null, 2));
+
+  // Extract image tag from the webhook payload
+  const imageTag = req.body.push_data.tag;
+
+  if (!imageTag) {
+    return res.status(400).send("Bad Request: No image tag found in the payload");
+  }
+
+  console.log(`Image tag received: ${imageTag}`);
+
+  // Construct the command with the image tag as a parameter
+  const command = `ssh -i ~/.ssh/id_rsa nroot@103.15.43.150 'bash ~/webhook-api-endpoint/script.sh ${imageTag}'`; // Replace with appropriate IP address
 
   try {
     const output = execSync(command); // the default is 'buffer'
     console.log(`Output:\n${output}`);
-    res.status(200).send("Hook data received");
+    res.status(200).send("Hook data received and script executed");
   } catch (error) {
     console.error(`Error: ${error.message}`);
     res.status(500).send("Error executing script");
@@ -126,6 +139,31 @@ When this API endpoint receives a POST request from the Docker Hub webhook, it w
 CONTAINER_NAME="test"
 IMAGE_NAME="kabbo06/hello_world_test"
 
+#SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+#TAG_FILE="$SCRIPT_DIR/webhook-api-endpoint/tagfile"
+TAG_FILE="~/webhook-api-endpoint/tagfile"
+
+# Check if a tag is provided as an argument
+if [ -z "$1" ]; then
+  echo "No image tag provided. Exiting."
+  exit 1
+fi
+
+NEW_IMAGE_TAG=$1
+
+# Ensure the tag file exists
+if [ ! -f "$TAG_FILE" ]; then
+  echo "Tag file not found. Creating a new one."
+  touch "$TAG_FILE"
+fi
+
+# Read the current tag from the tag file if it exists
+if [ -f "$TAG_FILE" ]; then
+  CURRENT_IMAGE_TAG=$(cat "$TAG_FILE")
+else
+  CURRENT_IMAGE_TAG=""
+fi
+
 echo "Stopping the container..."
 # Stop the running container
 sudo docker stop $CONTAINER_NAME
@@ -134,17 +172,29 @@ echo "Removing the container..."
 # Remove the stopped container
 sudo docker rm $CONTAINER_NAME
 
-echo "Removing the image..."
-# Remove the Docker image
-sudo docker rmi $IMAGE_NAME:latest
+if [ -n "$CURRENT_IMAGE_TAG" ]; then
+  echo "Removing the old image with tag $CURRENT_IMAGE_TAG..."
+  # Remove the Docker image with the current tag
+  sudo docker rmi $IMAGE_NAME:$CURRENT_IMAGE_TAG
+else
+  echo "No existing image tag found. Skipping image removal."
+fi
 
-echo "Pulling the latest image..."
-# Pull the latest image from the repository
-sudo docker pull $IMAGE_NAME:latest
+echo "Pulling the latest image with tag $NEW_IMAGE_TAG..."
+# Pull the new image with the specified tag
+sudo docker pull $IMAGE_NAME:$NEW_IMAGE_TAG
 
 echo "Running the new container..."
-# Run the new container
-sudo docker run -d --name $CONTAINER_NAME -p 8080:80  $IMAGE_NAME:latest
+# Run the new container with the specified tag
+sudo docker run -d --name $CONTAINER_NAME -p 8080:80 $IMAGE_NAME:$NEW_IMAGE_TAG
+
+if [ $? -eq 0 ]; then
+  echo "Updating the tag file with the new image tag..."
+  # Update the tag file with the new image tag
+  echo $NEW_IMAGE_TAG > "$TAG_FILE"
+else
+  echo "Failed to run the new container. Keeping the old tag."
+fi
 
 echo "Cleaning unused container images..."
 # Clean unused images
